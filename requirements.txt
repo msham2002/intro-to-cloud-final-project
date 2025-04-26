@@ -1,4 +1,4 @@
 Flask==2.0.3
-pyodbc==4.0.32
+pymssql==2.2.7
 gunicorn==20.1.0
 azure-identity==1.6.0

@@ -1,15 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for
-import pyodbc, os
+import pymssql, os
 
 app = Flask(__name__)
 
-conn_str = (
-    'DRIVER={ODBC Driver 17 for SQL Server};'
-    f"SERVER={os.getenv('AZURE_SQL_SERVER')};"
-    f"DATABASE={os.getenv('AZURE_SQL_DB')};"
-    f"UID={os.getenv('DB_USER')};PWD={os.getenv('DB_PASSWORD')}"
-)
 
+conn = pymssql.connect(
+    server=os.getenv("AZURE_SQL_SERVER"),  # intro-to-cloud-final-project-server.database.windows.net
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("AZURE_SQL_DB"),    # retaildb
+    port=1433
+)
 @app.route('/')
 def home():
     return redirect(url_for('login'))
