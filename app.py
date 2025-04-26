@@ -6,9 +6,9 @@ app = Flask(__name__)
 def get_conn():
     return pymssql.connect(
         server=os.getenv("AZURE_SQL_SERVER"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        database=os.getenv("AZURE_SQL_DB"),
+        user=os.getenv("AZURE_SQL_USER"),
+        password=os.getenv("AZURE_SQL_PASSWORD"),
+        database=os.getenv("AZURE_SQL_DATABASE"),
         port=1433
     )
 
