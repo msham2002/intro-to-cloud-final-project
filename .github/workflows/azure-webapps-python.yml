@@ -2,7 +2,7 @@ name: Build & Deploy Python App to Azure Web App
 
 on:
   push:
-    branches: [ master ]          # or your default branch
+    branches: [ master ]
 
 jobs:
   build-and-deploy:
@@ -10,6 +10,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc g++ unixodbc-dev
 
     - name: Set up Python 3.12
       uses: actions/setup-python@v4
@@ -27,7 +32,7 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: intro-to-cloud-final-project   # EXACTLY match your Web App name
+        app-name: intro-to-cloud-final-project   # match your Web App name
         slot-name: production
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: app.zip
