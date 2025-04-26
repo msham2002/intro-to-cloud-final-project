@@ -45,8 +45,8 @@ def search():
                 SELECT TOP 100
                        t.HSHD_NUM, t.BASKET_NUM, t.Purchase_DT,
                        t.Product_Num, p.Department, p.Commodity
-                FROM   retail.Transactions t
-                JOIN   retail.Products p
+                FROM   retail.cleaned_400_transactions t
+                JOIN   retail.cleaned_400_products p
                   ON t.Product_Num = p.Product_Num
                 WHERE  t.HSHD_NUM = %s
                 ORDER  BY t.Purchase_DT DESC
