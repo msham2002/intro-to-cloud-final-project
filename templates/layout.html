@@ -14,6 +14,7 @@
 <body>
   <!-- global navigation bar -->
   <nav>
+  {% if session.get("user") %}
     <a href="{{ url_for('search') }}">Search</a>
     <a href="{{ url_for('upload') }}">Reload</a>
     <a href="{{ url_for('dashboard') }}">Dashboard</a>
