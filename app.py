@@ -50,7 +50,7 @@ def search():
                 JOIN   retail.cleaned_400_products p
                   ON t.PRODUCT_NUM = p.PRODUCT_NUM
                 WHERE  t.HSHD_NUM = %s
-                ORDER  BY t.Purchase_DT DESC
+                ORDER  BY t.PURCHASE DESC
             """, (hshd,))
             results = cur.fetchall()
     return render_template("search.html", results=results, user=session.get("user"))
