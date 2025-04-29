@@ -156,3 +156,18 @@ def dashboard():
         combo_labels=combo_labels, combo_values=combo_values,
         user=session["user"]
     )
+
+@app.route("/clv")
+def clv():
+    if "user" not in session:
+        return redirect(url_for("login"))
+
+    with get_conn().cursor(as_dict=True) as cur:
+        cur.execute("""
+            SELECT TOP 20 HSHD_NUM, CAST(CLV_PRED AS FLOAT) AS CLV
+            FROM   retail.clv_scores
+            ORDER  BY CLV_PRED DESC;
+        """)
+        rows = cur.fetchall()
+
+    return render_template("clv.html", rows=rows)

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>Highest predicted customer-lifetime-value (next 12 mo)</h2>
+
+<table>
+  <tr><th>Household #</th><th>Predicted CLV&nbsp;($)</th></tr>
+  {% for r in rows %}
+    <tr><td>{{ r.HSHD_NUM }}</td><td>{{ "%.2f"|format(r.CLV) }}</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
