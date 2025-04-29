@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import os, pymssql
 
 app = Flask(__name__)
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev")
 
 def get_conn():
     return pymssql.connect(
