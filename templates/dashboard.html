@@ -6,6 +6,14 @@
 <canvas id="deptChart"   height="130" style="margin-top:50px"></canvas>
 <canvas id="comboChart"  height="130" style="margin-top:50px"></canvas>
 
+
+<select id="seedSelect">
+    {% for p in seed_list %}
+       <option value="{{ p }}">{{ p }}</option>
+    {% endfor %}
+  </select>
+  <canvas id="comboChart" height="140"></canvas>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
   const weeklyCtx = document.getElementById('weeklyChart');
@@ -36,5 +44,18 @@
                         data: {{ combo_values|tojson|safe }} }]},
     options:{ plugins:{ legend:{ display:false } },
               scales:{ x:{ beginAtZero:true } } }});
+
+  const pairCtx   = document.getElementById('pairChart');
+  const pairChart = new Chart(pairCtx,{type:'bar',data:{labels:[],datasets:[{data:[]}]},
+                                       options:{scales:{x:{beginAtZero:true}},plugins:{legend:{display:false}}}});
+  async function loadPairs(seed){
+      const res = await fetch(`/api/cross_sell/${seed}`);
+      const js  = await res.json();
+      pairChart.data.labels             = js.map(r=>r.TARGET_PROD);
+      pairChart.data.datasets[0].data   = js.map(r=>r.PROB_ATTACH);
+      pairChart.update();
+  }
+  document.getElementById('seedSelect').onchange = e => loadPairs(e.target.value);
+  loadPairs(document.getElementById('seedSelect').value);   // first run
 </script>
 {% endblock %}

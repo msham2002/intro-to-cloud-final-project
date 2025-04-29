@@ -69,4 +69,4 @@ with conn.cursor() as cur:
 conn.close()
 
 joblib.dump(pipe, "gbr_clv.pkl")
-print("Done → wrote", len(train), "rows   &   gbr_clv.pkl")
+print("Done -> wrote", len(train), "rows   &   gbr_clv.pkl")

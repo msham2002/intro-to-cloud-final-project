@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import os, pymssql
 import tempfile, pandas as pd
+import json, joblib
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev")
@@ -139,6 +140,13 @@ def dashboard():
         """)
         combos = cur.fetchall()
 
+        cur.execute("""
+            SELECT TOP 10 SRC_PROD, TGT_PROD, PROB
+            FROM   retail.cross_sell
+            ORDER  BY PROB DESC;
+        """)
+        seeds = cur.fetchall()
+
     #prepare arrays for Chart.js
     ws_labels  = [r["PERIOD"] for r in weekly]
     ws_values  = [float(r["TOTAL"]) for r in weekly]
@@ -149,11 +157,16 @@ def dashboard():
     combo_labels = [r["PAIR"] for r in combos]
     combo_values = [int(r["CNT"]) for r in combos]
 
+    with get_conn().cursor() as cur:
+        cur.execute("SELECT DISTINCT SEED_PROD FROM retail.cross_sell")
+        seed_list = [r[0] for r in cur.fetchall()]
+
     return render_template(
         "dashboard.html",
         ws_labels=ws_labels, ws_values=ws_values,
         dept_labels=dept_labels, dept_values=dept_values,
-        combo_labels=combo_labels, combo_values=combo_values,
+        combo_labels=[], combo_values=[],
+        seed_list=seed_list,
         user=session["user"]
     )
 
@@ -171,3 +184,17 @@ def clv():
         rows = cur.fetchall()
 
     return render_template("clv.html", rows=rows)
+
+@app.route("/api/cross_sell/<int:seed_id>")
+def api_cross_sell(seed_id):
+    if "user" not in session:
+        return ("", 401)
+    with get_conn().cursor(as_dict=True) as cur:
+        cur.execute("""
+           SELECT TOP 10 TARGET_PROD, PROB_ATTACH
+           FROM retail.cross_sell
+           WHERE SEED_PROD = %s
+           ORDER BY PROB_ATTACH DESC
+        """, (seed_id,))
+        rows = cur.fetchall()
+    return json.dumps(rows), 200, {"Content-Type": "application/json"}
