@@ -46,13 +46,17 @@
               scales:{ x:{ beginAtZero:true } } }});
 
   const pairCtx   = document.getElementById('pairChart');
-  const pairChart = new Chart(pairCtx,{type:'bar',data:{labels:[],datasets:[{data:[]}]},
-                                       options:{scales:{x:{beginAtZero:true}},plugins:{legend:{display:false}}}});
+  const pairChart = new Chart(pairCtx,{
+        type:'bar',
+        data:{labels:[],datasets:[{data:[]}]},
+        options:{scales:{x:{beginAtZero:true}},plugins:{legend:{display:false}}}
+  });
+
   async function loadPairs(seed){
       const res = await fetch(`/api/cross_sell/${seed}`);
       const js  = await res.json();
-      pairChart.data.labels             = js.map(r=>r.TARGET_PROD);
-      pairChart.data.datasets[0].data   = js.map(r=>r.PROB_ATTACH);
+      pairChart.data.labels           = js.map(r => r.TARGET_PROD);
+      pairChart.data.datasets[0].data = js.map(r => r.PROB_ATTACH);
       pairChart.update();
   }
   document.getElementById('seedSelect').onchange = e => loadPairs(e.target.value);
