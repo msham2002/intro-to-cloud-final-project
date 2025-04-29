@@ -143,10 +143,10 @@ def dashboard():
         cur.execute("""
             SELECT TOP 10
                    SEED_PROD,
-                   TARGET_PROB,
-                   PROB_ATTATCH
+                   TARGET_PROD,
+                   PROB_ATTACH
             FROM   retail.cross_sell
-            ORDER  BY PROB_ATTATCH DESC;
+            ORDER  BY PROB_ATTACH DESC;
         """)
         seed_rows = cur.fetchall() 
 
