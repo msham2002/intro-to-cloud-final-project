@@ -92,3 +92,67 @@ def upload():
         else:
             message = "Only .csv files are accepted."
     return render_template("upload.html", user=session["user"], msg=message)
+
+
+@app.route("/dashboard")
+def dashboard():
+    if "user" not in session:
+        return redirect(url_for("login"))
+
+    with get_conn() as conn, conn.cursor(as_dict=True) as cur:
+        # 1) weekly spend (2-year horizon)
+        cur.execute("""
+            SELECT CONCAT(t.Year,'-',RIGHT('0'+CAST(t.Week_Num AS varchar),2)) AS PERIOD,
+                   SUM(t.Spend) AS TOTAL
+            FROM   retail.cleaned_400_transactions t
+            GROUP  BY t.Year, t.Week_Num
+            ORDER  BY t.Year, t.Week_Num
+        """)
+        weekly = cur.fetchall()
+
+        # 2) top-10 departments by spend
+        cur.execute("""
+            SELECT TOP 10 p.Department, SUM(t.Spend) AS TOTAL
+            FROM retail.cleaned_400_transactions t
+            JOIN retail.cleaned_400_products     p ON t.Product_Num = p.Product_Num
+            GROUP BY p.Department
+            ORDER BY TOTAL DESC
+        """)
+        depts = cur.fetchall()
+
+        # 3) simple basket cross-sell: top 15 product-pairs (same basket)
+        cur.execute("""
+            WITH pairs AS (
+              SELECT TOP 15
+                     CONCAT(MIN(p1.Department), ' & ', MIN(p2.Department)) AS PAIR,
+                     COUNT(*) AS CNT
+              FROM retail.cleaned_400_transactions t1
+              JOIN retail.cleaned_400_transactions t2
+                     ON  t1.Basket_Num = t2.Basket_Num
+                     AND t1.Product_Num < t2.Product_Num
+              JOIN retail.cleaned_400_products p1 ON t1.Product_Num = p1.Product_Num
+              JOIN retail.cleaned_400_products p2 ON t2.Product_Num = p2.Product_Num
+              GROUP BY t1.Product_Num, t2.Product_Num
+              ORDER BY CNT DESC
+            )
+            SELECT PAIR, CNT FROM pairs;
+        """)
+        combos = cur.fetchall()
+
+    #prepare arrays for Chart.js
+    ws_labels  = [r["PERIOD"] for r in weekly]
+    ws_values  = [float(r["TOTAL"]) for r in weekly]
+
+    dept_labels = [r["Department"] for r in depts]
+    dept_values = [float(r["TOTAL"])     for r in depts]
+
+    combo_labels = [r["PAIR"] for r in combos]
+    combo_values = [int(r["CNT"]) for r in combos]
+
+    return render_template(
+        "dashboard.html",
+        ws_labels=ws_labels, ws_values=ws_values,
+        dept_labels=dept_labels, dept_values=dept_values,
+        combo_labels=combo_labels, combo_values=combo_values,
+        user=session["user"]
+    )

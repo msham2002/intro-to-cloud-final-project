@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>Retail dashboard</h2>
+<p><a href="{{ url_for('search') }}">← back to Search</a></p>
+
+<canvas id="weeklyChart" height="130"></canvas>
+<canvas id="deptChart"   height="130" style="margin-top:50px"></canvas>
+<canvas id="comboChart"  height="130" style="margin-top:50px"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+  const weeklyCtx = document.getElementById('weeklyChart');
+  new Chart(weeklyCtx, {
+    type:'line',
+    data:{ labels: {{ ws_labels|tojson|safe }},
+           datasets:[{ label:'Weekly spend',
+                        data: {{ ws_values|tojson|safe }},
+                        tension:.3, fill:false }]},
+    options:{ responsive:true,
+              interaction:{mode:'index',intersect:false},
+              scales:{ y:{ beginAtZero:true } } }});
+
+  const deptCtx = document.getElementById('deptChart');
+  new Chart(deptCtx,{
+    type:'bar',
+    data:{ labels: {{ dept_labels|tojson|safe }},
+           datasets:[{ label:'Spend by department',
+                        data: {{ dept_values|tojson|safe }} }]},
+    options:{ indexAxis:'y',
+              plugins:{ legend:{ display:false } } }});
+
+  const comboCtx = document.getElementById('comboChart');
+  new Chart(comboCtx,{
+    type:'bar',
+    data:{ labels: {{ combo_labels|tojson|safe }},
+           datasets:[{ label:'Top product-pairs',
+                        data: {{ combo_values|tojson|safe }} }]},
+    options:{ plugins:{ legend:{ display:false } },
+              scales:{ x:{ beginAtZero:true } } }});
+</script>
+{% endblock %}

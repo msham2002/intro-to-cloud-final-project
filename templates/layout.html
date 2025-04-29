@@ -5,11 +5,22 @@
   <title>Retail Analytics</title>
   <style>
     body{font-family:Arial,Helvetica,sans-serif;margin:2rem;}
-    table{border-collapse:collapse;width:100%} th,td{border:1px solid #ccc;padding:.4rem}
-    a{color:#0066cc;text-decoration:none}
+    nav a{margin-right:10px;color:#0066cc;text-decoration:none}
+    table{border-collapse:collapse;width:100%}
+    th,td{border:1px solid #ccc;padding:.4rem;text-align:left}
   </style>
 </head>
+
 <body>
+  <!-- global navigation bar -->
+  <nav>
+    <a href="{{ url_for('search') }}">Search</a>
+    <a href="{{ url_for('upload') }}">Reload</a>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('logout') }}">Log out</a>
+  </nav>
+  <hr>
+
   {% block body %}{% endblock %}
 </body>
 </html>
