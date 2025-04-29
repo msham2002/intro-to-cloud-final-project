@@ -148,7 +148,7 @@ def dashboard():
             FROM   retail.cross_sell
             ORDER  BY PROB_ATTATCH DESC;
         """)
-        seeds = cur.fetchall()
+        seed_rows = cur.fetchall() 
 
     #prepare arrays for Chart.js
     ws_labels  = [r["PERIOD"] for r in weekly]
@@ -168,7 +168,7 @@ def dashboard():
         "dashboard.html",
         ws_labels=ws_labels, ws_values=ws_values,
         dept_labels=dept_labels, dept_values=dept_values,
-        combo_labels=[], combo_values=[],
+        combo_labels=combo_labels, combo_values=combo_values,
         seed_list=seeds,
         user=session["user"]
     )
