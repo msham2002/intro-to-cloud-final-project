@@ -201,3 +201,18 @@ def api_cross_sell(seed_id):
         """, (seed_id,))
         rows = cur.fetchall()
     return json.dumps(rows), 200, {"Content-Type": "application/json"}
+
+@app.route("/churn")
+def churn():
+    if "user" not in session:
+        return redirect(url_for("login"))
+
+    with get_conn().cursor(as_dict=True) as cur:
+        cur.execute("""
+            SELECT TOP 20 HSHD_NUM, CHURN_PROB
+            FROM   retail.churn_scores
+            ORDER  BY CHURN_PROB DESC;
+        """)
+        rows = cur.fetchall()
+
+    return render_template("churn.html", rows=rows)

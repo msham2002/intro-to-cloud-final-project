@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>Households most likely to churn (next 8 weeks)</h2>
+
+<table>
+  <tr><th>Household&nbsp;#</th><th>Churn&nbsp;probability</th></tr>
+  {% for r in rows %}
+    <tr><td>{{ r.HSHD_NUM }}</td><td>{{ "%.2f%%"|format(r.CHURN_PROB*100) }}</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
