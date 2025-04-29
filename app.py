@@ -141,9 +141,12 @@ def dashboard():
         combos = cur.fetchall()
 
         cur.execute("""
-            SELECT TOP 10 SRC_PROD, TGT_PROD, PROB
+            SELECT TOP 10
+                   SEED_PROD,
+                   TARGET_PROB,
+                   PROB_ATTATCH
             FROM   retail.cross_sell
-            ORDER  BY PROB DESC;
+            ORDER  BY PROB_ATTATCH DESC;
         """)
         seeds = cur.fetchall()
 
@@ -159,14 +162,14 @@ def dashboard():
 
     with get_conn().cursor() as cur:
         cur.execute("SELECT DISTINCT SEED_PROD FROM retail.cross_sell")
-        seed_list = [r[0] for r in cur.fetchall()]
+        seeds = [r[0] for r in cur.fetchall()]
 
     return render_template(
         "dashboard.html",
         ws_labels=ws_labels, ws_values=ws_values,
         dept_labels=dept_labels, dept_values=dept_values,
         combo_labels=[], combo_values=[],
-        seed_list=seed_list,
+        seed_list=seeds,
         user=session["user"]
     )
 
