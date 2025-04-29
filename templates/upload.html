@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>Reload data</h2>
+<p>Choose which table to replace, then choose the clean CSV.</p>
+
+<form method="post" enctype="multipart/form-data">
+  <label>
+    Target table:
+    <select name="table" required>
+      <option value="retail.cleaned_400_transactions">Transactions</option>
+      <option value="retail.cleaned_400_products">Products</option>
+      <option value="retail.cleaned_400_households">Households</option>
+    </select>
+  </label><br><br>
+
+  <label>CSV file:
+    <input type="file" name="csv" accept=".csv" required>
+  </label><br><br>
+
+  <button type="submit">Upload &nbsp;🚀</button>
+</form>
+
+{% if msg %}<p><strong>{{ msg }}</strong></p>{% endif %}
+<p><a href="{{ url_for('search') }}">← back to Search</a></p>
+{% endblock %}
