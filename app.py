@@ -237,13 +237,13 @@ def sample():
                 t.STORE_R,
                 t.WEEK_NUM,
                 t.YEAR,
-                h.LOYALTY_FLAG,
+                h.L,
                 h.AGE_RANGE,
-                h.MARITAL_STATUS,
+                h.MARITAL,
                 h.INCOME_RANGE,
                 h.HOMEOWNER_DESC,
                 h.HSHD_COMPOSITION,
-                h.HSHD_SIZE,
+                h.HH_SIZE,
                 h.CHILDREN
             FROM
                 retail.cleaned_400_transactions t
