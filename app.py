@@ -241,7 +241,7 @@ def sample():
                 h.AGE_RANGE,
                 h.MARITAL,
                 h.INCOME_RANGE,
-                h.HOMEOWNER_DESC,
+                h.HOMEOWNER,
                 h.HSHD_COMPOSITION,
                 h.HH_SIZE,
                 h.CHILDREN
