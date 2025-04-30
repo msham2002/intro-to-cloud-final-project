@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Project Overview & Insights</h1>
+
+    <h3>📄 Machine Learning Models</h3>
+    <ul>
+        <li><b>Linear Regression:</b> Linear Regression is a basic yet powerful algorithm used to model the relationship between a dependent variable and one or more independent variables. It assumes a linear relationship, which can limit its flexibility but offers high interpretability and fast computation.</li>
+        <li><b>Random Forest:</b> Random Forest is an ensemble model that builds multiple decision trees and averages their results to improve accuracy and reduce overfitting. It handles non-linear relationships well, but can be less interpretable and slower than simpler models.</li>
+        <li><b>Gradient Boosting:</b> Gradient Boosting builds trees sequentially, where each new tree corrects errors made by previous ones. This method often delivers high accuracy, especially for structured/tabular data. However, its sensitive to hyperparameters and more prone to overfitting than Random Forest.</li>
+    </ul>
+    <p><b>Chosen Model:</b> Gradient Boosting Regressor for CLV prediction due to best performance on hold-out set (lowest MAE).</p>
+
+    <hr class="my-4">
+
+    <h3>📊 Dashboard Graph Insights</h3>
+    <ul>
+        <li><b>Weekly Spend Over Time:</b> Tracks overall spending trends and seasonality.</li>
+        <li><b>Top Departments by Spend:</b> Identifies which categories drive revenue.</li>
+        <li><b>Product Combinations:</b> Shows top pairs bought together to support cross-sell strategies.</li>
+        <li><b>Cross-Sell Targets:</b> Given a product, shows likely pairings using attachment probability.</li>
+        <li><b>Top 20 CLV Customers:</b> Prioritize these high-value shoppers for loyalty rewards.</li>
+        <li><b>Top 20 Churn Risks:</b> At-risk customers to re-engage through targeted outreach.</li>
+    </ul>
+</div>
+{% endblock %}
