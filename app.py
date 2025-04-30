@@ -247,8 +247,8 @@ def sample():
                 h.CHILDREN
             FROM
                 retail.cleaned_400_transactions t
-            JOIN retail.cleaned_products_400 p ON t.PRODUCT_NUM = p.PRODUCT_NUM
-            JOIN retail.cleaned_households_400 h ON t.HSHD_NUM = h.HSHD_NUM
+            JOIN retail.cleaned_400_products p ON t.PRODUCT_NUM = p.PRODUCT_NUM
+            JOIN retail.cleaned_400_households h ON t.HSHD_NUM = h.HSHD_NUM
             WHERE
                 t.HSHD_NUM = 10
             ORDER BY
