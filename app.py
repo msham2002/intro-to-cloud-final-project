@@ -30,7 +30,7 @@ def login():
         if username and password and email:
             #for now, accept any non-empty trio
             session["user"] = username
-            return redirect(url_for("dashboard"))
+            return redirect(url_for("sample"))
         else:
             error = "All fields are required."
     return render_template("login.html", error=error)
