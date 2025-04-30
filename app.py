@@ -234,7 +234,7 @@ def sample():
                 p.COMMODITY,
                 t.SPEND,
                 t.UNITS,
-                t.STORE_REGION,
+                t.STORE_R,
                 t.WEEK_NUM,
                 t.YEAR,
                 h.LOYALTY_FLAG,
