@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container mt-4">
+  <h2>Example Data Pull for HSHD_NUM = 10</h2>
+  <p>Linking the <b>household</b>, <b>transaction</b>, and <b>products</b> tables</p>
+  <div class="table-responsive">
+    <table class="table table-bordered table-sm table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Hshd_num</th><th>Basket_num</th><th>Date</th><th>Product_num</th>
+          <th>Department</th><th>Commodity</th><th>Spend</th><th>Units</th>
+          <th>Store_region</th><th>Week_num</th><th>Year</th>
+          <th>Loyalty_flag</th><th>Age_range</th><th>Marital_status</th>
+          <th>Income_range</th><th>Homeowner_desc</th>
+          <th>Hshd_composition</th><th>Hshd_size</th><th>Children</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          {% for val in row %}
+          <td>{{ val }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

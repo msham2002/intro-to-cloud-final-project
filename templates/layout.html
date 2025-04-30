@@ -16,6 +16,7 @@
   <nav>
     {% if session.get("user") and request.endpoint != "login" %}
       <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a class="nav-link" href="{{ url_for('sample') }}">Sample&nbsp;Pull</a>
       <a href="{{ url_for('search') }}">Search</a>
       <a href="{{ url_for('upload') }}">Reload</a>
       <a href="{{ url_for('clv')     }}">Top&nbsp;CLV</a>

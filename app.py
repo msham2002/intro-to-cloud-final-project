@@ -216,3 +216,45 @@ def churn():
         rows = cur.fetchall()
 
     return render_template("churn.html", rows=rows)
+
+
+@app.route("/sample")
+def sample():
+    if "user" not in session:
+        return redirect(url_for("login"))
+    
+    with get_conn().cursor(as_dict=True) as cur:
+        cur.execute("""
+            SELECT
+                t.HSHD_NUM,
+                t.BASKET_NUM,
+                t.PURCHASE     AS Date,
+                t.PRODUCT_NUM,
+                p.DEPARTMENT,
+                p.COMMODITY,
+                t.SPEND,
+                t.UNITS,
+                t.STORE_REGION,
+                t.WEEK_NUM,
+                t.YEAR,
+                h.LOYALTY_FLAG,
+                h.AGE_RANGE,
+                h.MARITAL_STATUS,
+                h.INCOME_RANGE,
+                h.HOMEOWNER_DESC,
+                h.HSHD_COMPOSITION,
+                h.HSHD_SIZE,
+                h.CHILDREN
+            FROM
+                retail.cleaned_400_transactions t
+            JOIN retail.products_400 p ON t.PRODUCT_NUM = p.PRODUCT_NUM
+            JOIN retail.households_400 h ON t.HSHD_NUM = h.HSHD_NUM
+            WHERE
+                t.HSHD_NUM = 10
+            ORDER BY
+                t.HSHD_NUM, t.BASKET_NUM, t.PURCHASE, t.PRODUCT_NUM, p.DEPARTMENT, p.COMMODITY
+        """)
+        rows = cur.fetchall()
+        
+    return render_template("sample.html", rows=rows, user=session["user"])
+
