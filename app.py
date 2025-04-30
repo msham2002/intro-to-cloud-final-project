@@ -258,3 +258,8 @@ def sample():
         
     return render_template("sample.html", rows=rows, user=session["user"])
 
+@app.route("/about")
+def about():
+    if "user" not in session:
+        return redirect(url_for("login"))
+    return render_template("about.html", user=session["user"])
